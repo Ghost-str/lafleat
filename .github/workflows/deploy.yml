@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: assets
-          patch: './dist'
+          path: './dist'
 
   # Single deploy job since we're just deploying
   deploy:
