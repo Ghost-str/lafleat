@@ -1,16 +1,40 @@
 name: Test
-on: [push]
+on: [pull_request]
 
 jobs:
-  check-types:
-    name: Check Typescript Types
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: '.nvmrc'
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+      - name: Eslint check
+        run: npm run lint
+      - name: Prettier check
+        run: npm run prettier
+
+  check-types:
+    name: Check Typescript Types
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
