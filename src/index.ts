@@ -7,6 +7,8 @@ import telegramSdk from './telegram-sdk';
 
 const markerIconInst = L.icon({
 	iconUrl: marker_icon,
+	iconSize: [25, 41],
+	iconAnchor: [13, 40],
 });
 
 const map = L.map('map');
