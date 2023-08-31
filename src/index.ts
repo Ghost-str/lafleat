@@ -22,4 +22,5 @@ places.forEach((place)=> {
    L.marker([place.lat,place.long], { icon: marker_icon_inst}).addTo(map)
 });
 
-
+// @ts-ignore
+window.Telegram.WebApp.ready();
