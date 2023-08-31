@@ -22,28 +22,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  runs-on: ubuntu-latest
   build:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version-file: ".nvmrc"
-    - name: Cache dependencies
-      id: cache
-      uses: actions/cache@v3
-      with:
-        path: ./node_modules
-        key: modules-${{ hashFiles('package-lock.json') }}
-    - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm ci --ignore-scripts
-    - name: Build
-      run: npm run build
-    - uses: actions/upload-artifact@v3
-      with:
-        name: assets
-        patch: './dist'
-    
+    runs-on: ubuntu-latest
+    name: Build
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: assets
+          patch: './dist'
 
   # Single deploy job since we're just deploying
   deploy:
