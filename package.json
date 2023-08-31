@@ -5,7 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "tsc -p ./"
+    "check": "tsc -p ./",
+    "serve": "webpack serve",
+    "build": "webpack build --mode=production"
   },
   "keywords": [],
   "author": "",
