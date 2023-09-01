@@ -9,17 +9,23 @@ const markerIconInst = L.icon({
 	iconUrl: marker_icon,
 	iconSize: [25, 41],
 	iconAnchor: [13, 40],
+	popupAnchor: [0, -25],
 });
 
 const map = L.map('map');
 
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '© OpenStreetMap',
 }).addTo(map);
 
 places.forEach((place) => {
-	L.marker([place.lat, place.long], {icon: markerIconInst}).addTo(map);
+	L.marker([place.lat, place.long], {icon: markerIconInst})
+		.bindPopup(
+			`${place.addres} </br>
+		Часы работы: От заката и до рассвета`
+		)
+		.addTo(map);
 });
 map.setView([51.501224, 45.944021], 18);
 
